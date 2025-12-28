@@ -2,13 +2,9 @@
 create table profiles (
   id uuid references auth.users on delete cascade not null primary key,
   updated_at timestamp with time zone,
-  username text unique,
-  full_name text,
   avatar_url text,
   team_name text,
-  email text,
-
-  constraint username_length check (char_length(username) >= 3)
+  email text
 );
 
 -- Set up Row Level Security (RLS)
@@ -28,8 +24,8 @@ create policy "Users can update own profile." on profiles
 create or replace function public.handle_new_user()
 returns trigger as $$
 begin
-  insert into public.profiles (id, full_name, avatar_url, email)
-  values (new.id, new.raw_user_meta_data->>'full_name', new.raw_user_meta_data->>'avatar_url', new.email);
+  insert into public.profiles (id, avatar_url, email, team_name)
+  values (new.id, new.raw_user_meta_data->>'avatar_url', new.email, new.raw_user_meta_data->>'team_name');
   return new;
 end;
 $$ language plpgsql security definer;

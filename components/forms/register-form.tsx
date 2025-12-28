@@ -5,18 +5,19 @@ import z from "zod";
 import { FieldGroup } from "../ui/field";
 import FormContainer from "./form-container";
 import { FormField } from "./form-field";
+import { register } from "@/app/actions/auth";
 
 
 interface RegisterformValues {
     email: string;
-    teamName: string;
+    team_name: string;
     password: string;
     confirmPassword: string;
 }
 
 const RegisterSchema = z.object({
     email: z.email(),
-    teamName: z.string().min(3, "Team name must be at least 3 characters long"),
+    team_name: z.string().min(3, "Team name must be at least 3 characters long"),
     password: z.string().min(8, "Password must be at least 8 characters long"),
     confirmPassword: z.string().min(8, "Password must be at least 8 characters long"),
 }).refine((data) => data.password === data.confirmPassword, {
@@ -30,7 +31,7 @@ export default function RegisterForm() {
     const form = useForm({
         defaultValues: {
             email: "",
-            teamName: "",
+            team_name: "",
             password: "",
             confirmPassword: "",
         },
@@ -39,14 +40,19 @@ export default function RegisterForm() {
         },
         onSubmit: async ({value}: {value: FormValues}) => {
             console.log(value)
+            const formData = new FormData()
+            formData.append("email", value.email)
+            formData.append("team_name", value.team_name || "")
+            formData.append("password", value.password)
+            await register(formData)
         }
     })
 
     return (
         <FormContainer
             title="Register To Play"
-            description="Sign up to play"
-            footer="Already have an account? Login"
+            description="sign up to pick it and stick it"
+            footer="Dont forget to lick it before you stick it"
             onReset={() => form.reset()}
         >
             <form
@@ -80,7 +86,7 @@ export default function RegisterForm() {
                     />
                     <FormField
                         form={form}
-                        name="teamName"
+                        name="team_name"
                         label="Team Name"
                         placeholder="Enter your team name"
                     />
