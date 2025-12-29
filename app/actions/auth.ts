@@ -31,3 +31,27 @@ export async function register(formData: FormData) {
 
     redirect(`/auth/register?success=${encodeURIComponent("Check your email for the confirmation link.")}`)
 }
+
+export async function login(formData: FormData) {
+    console.log(formData)
+    const supabase = await createClient()
+
+    const email = formData.get("email")
+    const password = formData.get("password")
+
+    if (!email || !password) {
+        redirect(`/auth/login?error=${encodeURIComponent("Email and password are required")}`)
+    }
+
+    const { error } = await supabase.auth.signInWithPassword({
+        email: email as string,
+        password: password as string,
+    })
+
+    if (error) {
+        redirect(`/auth/login?error=${encodeURIComponent(error.message)}`)
+    }
+
+    redirect("/picks/dashboard")
+}
+    

@@ -46,29 +46,10 @@ export async function updateSession(request: NextRequest) {
 //     return NextResponse.redirect(url);
 //   }
 
-//   if (
-//     user &&
-//     (request.nextUrl.pathname.startsWith("/select") ||
-//       request.nextUrl.pathname.startsWith("/dashboard"))
-//   ) {
-//     try {
-//       const res = await fetch(
-//         new URL("/api/subscription-status", request.url),
-//         { headers: { cookie: request.headers.get("cookie") || "" } }
-//       );
-//       const { active } = await res.json();
-
-//       if (!active) {
-//         const url = request.nextUrl.clone();
-//         url.pathname = "/subscribe";
-//         return NextResponse.redirect(url);
-//       }
-//     } catch (error) {
-//       console.error("Subscription check failed:", error);
-//       const url = request.nextUrl.clone();
-//       url.pathname = "/subscribe";
-//       return NextResponse.redirect(url);
-//     }
+//  if (user && request.nextUrl.pathname.startsWith("/signin") || request.nextUrl.pathname.startsWith("/register")) {
+//     const url = request.nextUrl.clone();
+//     url.pathname = "/picks/dashboard";
+//     return NextResponse.redirect(url);
 //   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.

@@ -8,12 +8,12 @@ import { FormField } from "./form-field";
 import { register } from "@/app/actions/auth";
 
 
-interface RegisterformValues {
-    email: string;
-    team_name: string;
-    password: string;
-    confirmPassword: string;
-}
+// interface RegisterFormValues {
+//     email: string;
+//     team_name: string;
+//     password: string;
+//     confirmPassword: string;
+// }
 
 const RegisterSchema = z.object({
     email: z.email(),
@@ -50,6 +50,7 @@ export default function RegisterForm() {
 
     return (
         <FormContainer
+            type="register"
             title="Register To Play"
             description="sign up to pick it and stick it"
             footer="Dont forget to lick it before you stick it"
