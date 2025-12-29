@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 
 interface FormContainerProps {
+    type: "login" | "register";
     title: string;
     description: string;
     footer: string;
@@ -11,7 +12,10 @@ interface FormContainerProps {
     onReset?: () => void;
 }
 
-export default function FormContainer({title, description, footer, children, onReset}: FormContainerProps) {
+export default function FormContainer({type, title, description, footer, children, onReset}: FormContainerProps) {
+
+    let form = type === "login" ? "login-form" : "register-form"
+
     return (
         <Card className="w-[350px] md:w-[475px]">
             <CardHeader>
@@ -26,14 +30,14 @@ export default function FormContainer({title, description, footer, children, onR
                     <Button type="button" variant="outline" className="flex-1" onClick={onReset}>
                         Reset Field
                     </Button>
-                    <Button type="submit" form="register-form" className="flex-1">
-                        Submit
+                    <Button type="submit" form={form} className="flex-1">
+                        {type === "login" ? "Login" : "Register"}
                     </Button>
                 </Field>
             </CardFooter>
             <div className="flex items-center justify-center space-x-3">
-                <small>Already have an account?</small>
-                <Link href="/auth/sign-in" className="text-blue-500">Go here</Link>
+                <small>{type === "login" ? "Don't have an account" : "Already have an account"}</small>
+                <Link href={type === "login" ? "/auth/register" : "/auth/login"} className="text-blue-500">Go here</Link>
             </div>
         </Card>
     )
